@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
-import { Layout, Page, Text, Code, Link, Snippet } from '@vercel/examples-ui'
+import { useState, useEffect, ReactElement } from 'react'
+import { Page, Text, Code, Link, Snippet } from '@vercel/examples-ui'
 import { Button, Quote } from '@acme/design-system'
+import { Layout } from '@acme/design-system'
 import { matchingTextColor, randomColor } from '@acme/utils'
-import Navbar from '../components/navbar'
+import { NavBar } from '@acme/design-system'
 
 export default function Home() {
   const [bgColor, setBgColor] = useState('')
@@ -16,171 +17,97 @@ export default function Home() {
   useEffect(changeColor, [])
 
   return (
-    <Page>
-      <Navbar />
-      <Text variant="h1" className="mb-6">
-        Microfrontends
-      </Text>
-      <Text className="mb-4">
-        In this Microfrontends app we have a Monorepo with multiple packages,
-        each using TypeScript and going through a different Microfrontend
-        tehnique:
-      </Text>
-      <Text variant="h2" className="mt-10 mb-6">
-        apps/main
-      </Text>
-      <Text className="mb-4">
-        This is the current Next.js site you&apos;re looking at. It uses{' '}
-        <Link
-          href="https://github.com/martpie/next-transpile-modules"
-          target="_blank"
-        >
-          next-transpile-modules
-        </Link>{' '}
-        to enable CSS Modules and HMR for packages that ship uncompiled code,
-        like is the case for <Code>packages/acme-pages</Code> which contains the
-        pages used in this application.
-      </Text>
-      <Text variant="h2" className="mt-10 mb-6">
-        packages/acme-design-system
-      </Text>
-      <Text className="mb-4">
-        Example of how you could build a Design System, it&apos;s a set of React
-        Components that ship with CSS Modules.
-      </Text>
-      {bgColor && textColor && (
-        <>
-          <Button className="mb-4">This is a button</Button>
-        </>
-      )}
-      <Quote className="mb-4">
-        This is the <Code>Quote</Code> component in the design system.
-      </Quote>
-      <Text variant="h2" className="mt-10 mb-6">
-        packages/acme-pages
-      </Text>
-      <Text className="mb-4">
-        Works in the same way as <Code>packages/acme-design-system</Code> but
-        instead of building a design system it&apos;s about having shared
-        components that represent pages.
-      </Text>
-      <Text className="mb-4">
-        You&apos;re currently looking at the Home page, defined in{' '}
-        <Code>packages/acme-pages/src/home</Code> and imported by{' '}
-        <Code>apps/main/pages/index.tsx</Code>.
-      </Text>
-      <Text variant="h2" className="mt-10 mb-6">
-        packages/acme-utils
-      </Text>
-      <Text className="mb-4">
-        This package exports utility functions, the package ships transpiled
-        code so it&apos;s not needed to use <Code>next-transpile-modules</Code>{' '}
-        in this case.
-      </Text>
-      <Text className="mb-4">
-        The button below uses an utility function from this package to change
-        its color when clicked:
-      </Text>
-      {bgColor && textColor && (
-        <>
-          <Button
-            className="mb-4"
-            style={{
-              backgroundColor: bgColor,
-              color: textColor,
-              borderColor: textColor,
-            }}
-            onClick={changeColor}
-          >
-            Change Color
-          </Button>
-        </>
-      )}
-      <Text variant="h2" className="mt-10 mb-6">
-        apps/docs (Multi Zones)
-      </Text>
-      <Text className="mb-4">
-        Next.js application that takes care of handling the pages for{' '}
-        <Code>/docs/**</Code>.
-      </Text>
-      <Text className="mb-4">
-        This example shows how Multi Zones can be managed in Next.js to merge
-        multiple Next.js applications in the same domain.
-      </Text>
-      <Text className="mb-4">
-        Compared with the approaches above, there&apos;s an actual UX impact
-        when doing multi zones because Next.js assets of different builds
-        can&apos;t be shared so they have to be downloaded again and transitions
-        are a full page refresh.
-      </Text>
-      <Text className="mb-4">
-        Local development can also be affected by HMR because changes to one app
-        outside its domain don&apos;t live reload (<Code>apps/main</Code> lives
-        in port 3000, and <Code>apps/docs</Code> in 3001).
-      </Text>
-      <Text variant="h2" className="mt-10 my-6">
-        packages/acme-tailwind-config
-      </Text>
-      <Text className="mb-4">
-        Exports the Tailwind CSS configuration that will be used by every app:
-      </Text>
-      <Snippet className="mb-4">{`mmodule.exports = {
-  presets: [
-    require('@vercel/examples-ui/tailwind'),
-    require('@acme/design-system/tailwind'),
-  ],
-}`}</Snippet>
-      <Text className="mb-4">
-        Every app then has a <Code>tailwind.config.js</Code> with:
-      </Text>
-      <Snippet className="mb-4">{`const { getContent } = require('@acme/tailwind-config/content')
+    <div>
+      <NavBar />
+      <div className="bg-white">
+        <div className="max-w-2xl mx-auto py-24 px-4 grid items-center grid-cols-1 gap-y-16 gap-x-8 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8 lg:grid-cols-2">
+          <div>
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              Technical Specifications
+            </h2>
+            <p className="mt-4 text-gray-500">
+              The walnut wood card tray is precision milled to perfectly fit a
+              stack of Focus cards. The powder coated steel divider separates
+              active cards from new ones, or can be used to archive important
+              task lists.
+            </p>
 
-module.exports = {
-  presets: [require('@acme/tailwind-config')],
-  content: getContent([
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ]),
-}`}</Snippet>
-      <Text className="mb-4">
-        <Code>getContent</Code> will append the packages that use Tailwind CSS
-        so that they&apos;re scanned properly. Those packages are{' '}
-        <Code>@vercel/examples-ui</Code>, <Code>@acme/design-system</Code> and{' '}
-        <Code>@acme/pages</Code>.
-      </Text>
-      <Text variant="h2" className="mt-10 my-6">
-        packages/acme-storybook
-      </Text>
-      <Text className="mb-4">
-        This packages takes the stories in{' '}
-        <Code>packages/acme-design-system</Code> and opens them in{' '}
-        <Link href="https://storybook.js.org/" target="_blank">
-          Storybook
-        </Link>
-        .
-      </Text>
-      <Text variant="h2" className="mt-10 my-6">
-        packages/eslint-config-acme
-      </Text>
-      <Text className="mb-4">
-        Exports the Eslint configuration that will be used by all apps and
-        packages:
-      </Text>
-      <Snippet className="mb-4">{`module.exports = {
-  extends: ['next/core-web-vitals', 'prettier'],
-  rules: {
-    '@next/next/no-html-link-for-pages': 'off',
-  },
-}`}</Snippet>
-      <Text className="mb-4">
-        Every package then has a <Code>.eslintrc</Code> with:
-      </Text>
-      <Snippet className="mb-4">{`module.exports = {
-  root: true,
-  extends: ['acme'],
-}`}</Snippet>
-    </Page>
+            <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
+              <div className="border-t border-gray-200 pt-4">
+                <dt className="font-medium text-gray-900">Origin</dt>
+                <dd className="mt-2 text-sm text-gray-500">
+                  Designed by Good Goods, Inc.
+                </dd>
+              </div>
+
+              <div className="border-t border-gray-200 pt-4">
+                <dt className="font-medium text-gray-900">Material</dt>
+                <dd className="mt-2 text-sm text-gray-500">
+                  Solid walnut base with rare earth magnets and powder coated
+                  steel card cover
+                </dd>
+              </div>
+
+              <div className="border-t border-gray-200 pt-4">
+                <dt className="font-medium text-gray-900">Dimensions</dt>
+                <dd className="mt-2 text-sm text-gray-500">
+                  6.25&quot; x 3.55&quot; x 1.15&quot;
+                </dd>
+              </div>
+
+              <div className="border-t border-gray-200 pt-4">
+                <dt className="font-medium text-gray-900">Finish</dt>
+                <dd className="mt-2 text-sm text-gray-500">
+                  Hand sanded and finished with natural oil
+                </dd>
+              </div>
+
+              <div className="border-t border-gray-200 pt-4">
+                <dt className="font-medium text-gray-900">Includes</dt>
+                <dd className="mt-2 text-sm text-gray-500">
+                  Wood card tray and 3 refill packs
+                </dd>
+              </div>
+
+              <div className="border-t border-gray-200 pt-4">
+                <dt className="font-medium text-gray-900">Considerations</dt>
+                <dd className="mt-2 text-sm text-gray-500">
+                  Made from natural materials. Grain and color vary with each
+                  item.
+                </dd>
+              </div>
+            </dl>
+          </div>
+          <div className="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
+            <img
+              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-01.jpg"
+              alt="Walnut card tray with white powder coated steel divider and 3 punchout holes."
+              className="bg-gray-100 rounded-lg"
+            />
+            <img
+              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-02.jpg"
+              alt="Top down view of walnut card tray with embedded magnets and card groove."
+              className="bg-gray-100 rounded-lg"
+            />
+            <img
+              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-03.jpg"
+              alt="Side of walnut card tray with card groove and recessed card area."
+              className="bg-gray-100 rounded-lg"
+            />
+            <img
+              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-04.jpg"
+              alt="Walnut card tray filled with cards and card angled in dedicated groove."
+              className="bg-gray-100 rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
 Home.Layout = Layout
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>
+}
